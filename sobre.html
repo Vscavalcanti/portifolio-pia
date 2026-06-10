@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre — Portfólio</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-name">WINTER BOINER</span>
+        <span class="logo-tagline"> </span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Galeria</a>
+        <a href="sobre.html" class="nav-link active">Sobre</a>
+        <a href="contato.html" class="nav-link">Contato</a>
+      </nav>
+      <button class="menu-toggle" aria-label="Menu" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="index.html" class="nav-link">Galeria</a>
+      <a href="sobre.html" class="nav-link active">Sobre</a>
+      <a href="contato.html" class="nav-link">Contato</a>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div class="sobre-grid">
+      <div class="sobre-image-wrap">
+        <!-- Troque "images/foto-perfil.jpg" pelo caminho da sua foto -->
+        <div class="sobre-img-placeholder">
+          <span>Sua foto aqui</span>
+          <p>Adicione <code>images/foto-perfil.jpg</code></p>
+        </div>
+        <!-- Descomente quando tiver a foto:
+        <img src="images/foto-perfil.jpg" alt="Foto de Seu Nome" class="sobre-img">
+        -->
+      </div>
+      <div class="sobre-text">
+        <h1 class="sobre-title">Olá, eu sou <em>Winter Boiner</em></h1>
+        <p class="sobre-bio">
+          batata azuk 
+        </p>
+        <p class="sobre-bio">
+          batata azuk
+        </p>
+
+        <div class="sobre-tags">
+          <span class="tag">Ilustração Digital</span>
+          <span class="tag">Character Design</span>
+          <span class="tag">Fan Art</span>
+          <span class="tag">Commissions Abertas</span>
+        </div>
+
+        <div class="sobre-social">
+          <a href="https://www.instagram.com/SEU_USUARIO" target="_blank" class="social-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            Instagram
+          </a>
+          <a href="https://twitter.com/SEU_USUARIO" target="_blank" class="social-pill">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            Twitter / X
+          </a>
+          <a href="https://www.artstation.com/SEU_USUARIO" target="_blank" class="social-pill">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 17.723l2.027 3.505h.001a2.424 2.424 0 0 0 2.164 1.333h13.457l-2.792-4.838H0zm24 .025c0-.484-.143-.935-.388-1.314L15.728 2.728a2.424 2.424 0 0 0-2.129-1.268H11.45L22.4 19.44l.518.896a2.433 2.433 0 0 0 1.08-1.588zm-11.85-3.862L6.182 2.96 0 13.604h12.15z"/></svg>
+            ArtStation
+          </a>
+          <a href="https://www.patreon.com/SEU_USUARIO" target="_blank" class="social-pill">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.82 2.41c3.96 0 7.18 3.24 7.18 7.21 0 3.96-3.22 7.18-7.18 7.18-3.97 0-7.21-3.22-7.21-7.18 0-3.97 3.24-7.21 7.21-7.21M2 21.6h3.5V2.41H2V21.6z"/></svg>
+            Patreon
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-name">Seu Nome</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/SEU_USUARIO" target="_blank">Instagram</a>
+        <a href="https://twitter.com/SEU_USUARIO" target="_blank">Twitter</a>
+        <a href="https://www.artstation.com/SEU_USUARIO" target="_blank">ArtStation</a>
+        <a href="https://www.patreon.com/SEU_USUARIO" target="_blank">Patreon</a>
+      </div>
+      <p class="footer-copy">© 2025 · Todos os direitos reservados</p>
+    </div>
+  </footer>
+
+  <script src="gallery.js"></script>
+</body>
+</html>

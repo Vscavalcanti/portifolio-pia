@@ -8,7 +8,7 @@ ESTRUTURA DE ARQUIVOS:
   contato.html     → Página de contato e redes sociais
   style.css        → Estilo visual (cores, fontes, layout)
   gallery.js       → Lógica da galeria e lista de imagens
-  images/          → COLOQUE SUAS IMAGENS AQUI
+  images/          → COLOQUE SUAS IMAGENS AQUI (crie a pasta)
   README.txt       → Este arquivo
 
 

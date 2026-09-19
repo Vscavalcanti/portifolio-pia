@@ -1,41 +1,12 @@
 /* =====================================================
    gallery.js — Sistema de Galeria
    =====================================================
-   COMO ADICIONAR IMAGENS:
-   1. Coloque os arquivos de imagem na pasta /images/
-   2. Edite a lista IMAGES abaixo adicionando cada obra
-   3. Salve e abra o index.html no navegador
+   As obras vêm do painel /admin (publicadas via Netlify
+   Blobs). A lista é buscada em /api/obras e cada imagem
+   é exibida a partir de /img/<id>.
    ===================================================== */
 
-const IMAGES = [
-  {
-  file: "images/trag.jpeg",  // caminho da imagem
-  title: "Trag",
-  category: "fanart",  // ou: ilustracao / fanart
-},
- {
-  file: "images/arkaedius.jpeg",  // caminho da imagem
-  title: "",
-  category: "character",  // ou: ilustracao / fanart
-},
-  /* EXEMPLO — remova ou edite estes itens:
-  {
-    file: "images/obra1.jpg",       // caminho da imagem
-    title: "Nome da Obra",          // título exibido no hover e lightbox
-    category: "character",          // character | ilustracao | fanart
-  },
-  {
-    file: "images/obra2.png",
-    title: "Outra Obra",
-    category: "ilustracao",
-  },
-  */
-];
-
-/* =====================================================
-   NÃO É PRECISO EDITAR ABAIXO DESTA LINHA
-   ===================================================== */
-
+let IMAGES = [];
 let currentImages = [];
 let currentIndex  = 0;
 
@@ -100,9 +71,25 @@ function renderGallery(filter = 'all') {
   });
 }
 
-/* --- Filtros --- */
+/* --- Carregar obras publicadas e filtros --- */
+function carregarObras() {
+  return fetch('/api/obras', { cache: 'no-store' })
+    .then(r => r.json())
+    .then(obras => {
+      IMAGES = obras.map(o => ({
+        file: '/img/' + o.id,
+        title: o.title,
+        category: o.category,
+      }));
+    })
+    .catch(() => { IMAGES = []; });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  renderGallery();
+  carregarObras().then(() => {
+    const activeBtn = document.querySelector('.filter-btn.active');
+    renderGallery(activeBtn ? activeBtn.dataset.filter : 'all');
+  });
 
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {

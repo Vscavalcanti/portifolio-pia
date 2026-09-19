@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Spykker';
+  src: url('fonts/Spykker.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ===== RESET & BASE ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -12,7 +20,7 @@
   --accent:   #c9a96e;
   --accent2:  #e8c98a;
   --white:    #f5f0e8;
-  --ff-serif: 'Cormorant Garamond', Georgia, serif;
+  --ff-serif: 'Spykker', 'Cormorant Garamond', Georgia, serif;
   --ff-sans:  'Outfit', sans-serif;
   --nav-h:    64px;
 }

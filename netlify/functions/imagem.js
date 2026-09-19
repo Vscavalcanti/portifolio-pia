@@ -1,7 +1,9 @@
 import { getStore } from "@netlify/blobs";
 
-export default async (req) => {
-  const id = new URL(req.url).searchParams.get("id");
+export const config = { path: "/img/:id" };
+
+export default async (req, context) => {
+  const id = context.params.id;
 
   if (!id) {
     return new Response("Faltou o id da imagem.", { status: 400 });

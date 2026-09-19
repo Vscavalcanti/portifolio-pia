@@ -1,0 +1,24 @@
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# /api/obras  -> lista, cadastra e remove obras
+[[redirects]]
+  from = "/api/obras"
+  to = "/.netlify/functions/obras"
+  status = 200
+
+# /img/<id>   -> devolve o arquivo da imagem
+[[redirects]]
+  from = "/img/*"
+  to = "/.netlify/functions/imagem?id=:splat"
+  status = 200
+
+# /admin      -> painel de cadastro
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200

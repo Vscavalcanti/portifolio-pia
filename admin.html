@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Publicar obra</title>
+<style>
+  :root{
+    --accent:#c9a96e; --accent-dim:#8a7548;
+    --bg:#0d0d0f; --surface:#17171b; --line:#2a2a31;
+    --text:#e8e4dc; --muted:#95908a; --erro:#d08a7a; --ok:#8fae85;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
+       font-size:15px;line-height:1.55;padding:2.5rem 1.25rem 5rem}
+  .wrap{max-width:960px;margin:0 auto}
+  h1{font-family:var(--serif);font-weight:400;font-size:2rem;margin:0 0 .3rem}
+  .sub{color:var(--muted);margin:0 0 2rem}
+  h2{font-family:var(--serif);font-weight:400;font-size:1.15rem;color:var(--accent);margin:0 0 1rem}
+  label{display:block;font-size:.8rem;color:var(--muted);margin:1rem 0 .3rem}
+  input[type=text],input[type=password],input[type=date],select{
+    width:100%;background:var(--surface);color:var(--text);border:1px solid var(--line);
+    border-radius:3px;padding:.6rem .7rem;font-family:inherit;font-size:.95rem}
+  input:focus-visible,select:focus-visible,button:focus-visible,.drop:focus-visible{
+    outline:2px solid var(--accent);outline-offset:2px}
+  .drop{border:1px dashed var(--accent-dim);border-radius:3px;background:var(--surface);
+        padding:1.6rem 1rem;text-align:center;color:var(--muted);cursor:pointer;font-size:.9rem}
+  .drop.ativo{border-color:var(--accent);color:var(--text)}
+  .drop img{max-width:100%;max-height:210px;display:block;margin:0 auto .6rem;border-radius:2px}
+  button{font-family:inherit;font-size:.9rem;cursor:pointer;border-radius:3px;
+         border:1px solid var(--accent-dim);background:transparent;color:var(--accent);padding:.55rem .9rem}
+  button:hover:not(:disabled){border-color:var(--accent)}
+  button:disabled{opacity:.45;cursor:default}
+  button.principal{background:var(--accent);border-color:var(--accent);color:#14120c;
+                   font-weight:600;width:100%;padding:.75rem;margin-top:1.5rem}
+  button.discreto{border-color:transparent;color:var(--muted);font-size:.8rem;padding:.2rem .4rem}
+  button.discreto:hover{color:var(--erro)}
+  .recado{min-height:1.3rem;font-size:.85rem;margin-top:.6rem}
+  .recado.erro{color:var(--erro)} .recado.ok{color:var(--ok)}
+  #entrada{max-width:380px;margin:4rem auto}
+  .layout{display:grid;gap:2.5rem;grid-template-columns:minmax(0,340px) minmax(0,1fr)}
+  @media(max-width:820px){.layout{grid-template-columns:1fr}}
+  ul.obras{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+  ul.obras li{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:.9rem;
+              align-items:center;border-bottom:1px solid var(--line);padding:.7rem .2rem}
+  ul.obras img{width:56px;height:56px;object-fit:cover;border-radius:2px;background:var(--surface)}
+  .titulo{font-family:var(--serif);font-size:1.02rem}
+  .meta{font-size:.78rem;color:var(--muted)}
+  .vazio{color:var(--muted);border:1px dashed var(--line);border-radius:3px;
+         padding:1.75rem;text-align:center;font-size:.9rem}
+  .rodape{margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--line);
+          color:var(--muted);font-size:.82rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- tela de senha -->
+  <div id="entrada">
+    <h1>Publicar obra</h1>
+    <p class="sub">Digite a senha para continuar.</p>
+    <label for="senha">Senha</label>
+    <input type="password" id="senha" autocomplete="current-password">
+    <button class="principal" id="entrar">Entrar</button>
+    <p class="recado" id="recadoEntrada" role="status"></p>
+  </div>
+
+  <!-- painel -->
+  <div id="painel" hidden>
+    <h1>Publicar obra</h1>
+    <p class="sub">A obra aparece na galeria assim que você publicar.</p>
+
+    <div class="layout">
+      <section>
+        <h2>Nova obra</h2>
+
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Escolher imagem">
+          <div id="dropConteudo">Clique ou arraste a imagem aqui</div>
+        </div>
+        <input type="file" id="arquivo" accept="image/*" hidden>
+
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" placeholder="Nome da obra">
+
+        <label for="categoria">Categoria</label>
+        <select id="categoria">
+          <option value="character">Character Design</option>
+          <option value="ilustracao">Ilustração</option>
+          <option value="fanart">Fan Art</option>
+        </select>
+
+        <label for="data">Data de postagem</label>
+        <input type="date" id="data">
+
+        <button class="principal" id="publicar">Publicar</button>
+        <p class="recado" id="recado" role="status"></p>
+      </section>
+
+      <section>
+        <h2>Na galeria (<span id="contador">0</span>)</h2>
+        <ul class="obras" id="lista"></ul>
+        <div class="vazio" id="vazio">Nenhuma obra publicada ainda.</div>
+      </section>
+    </div>
+
+    <div class="rodape">
+      <a href="/">Ver a galeria</a>
+      <button class="discreto" id="sair">Sair</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var LADO_MAX = 1600;     // maior lado da imagem publicada, em pixels
+  var QUALIDADE = 0.85;
+
+  var senha = "";
+  var arquivoPronto = null;   // Blob já redimensionado
+  var nomePronto = "";
+  var urlPreview = null;
+
+  var el = function(id){ return document.getElementById(id); };
+  var entrada = el("entrada"), painel = el("painel");
+  var drop = el("drop"), dropConteudo = el("dropConteudo"), inputArquivo = el("arquivo");
+  var titulo = el("titulo"), categoria = el("categoria"), data = el("data");
+  var recado = el("recado"), lista = el("lista"), vazio = el("vazio"), contador = el("contador");
+  var botaoPublicar = el("publicar");
+
+  function avisar(caixa, msg, tipo){
+    caixa.textContent = msg || "";
+    caixa.className = "recado" + (tipo ? " " + tipo : "");
+  }
+
+  function hoje(){
+    var d = new Date(), m = String(d.getMonth()+1).padStart(2,"0"), dia = String(d.getDate()).padStart(2,"0");
+    return d.getFullYear()+"-"+m+"-"+dia;
+  }
+
+  // ---------- entrar ----------
+  function entrar(valor){
+    senha = valor;
+    try{ sessionStorage.setItem("painel:senha", valor); }catch(e){}
+    entrada.hidden = true;
+    painel.hidden = false;
+    data.value = hoje();
+    carregarLista();
+  }
+
+  el("entrar").addEventListener("click", function(){
+    var valor = el("senha").value;
+    if(!valor){ avisar(el("recadoEntrada"), "Digite a senha.", "erro"); return; }
+    entrar(valor);
+  });
+  el("senha").addEventListener("keydown", function(e){
+    if(e.key === "Enter") el("entrar").click();
+  });
+  el("sair").addEventListener("click", function(){
+    try{ sessionStorage.removeItem("painel:senha"); }catch(e){}
+    location.reload();
+  });
+
+  // ---------- escolher e reduzir a imagem ----------
+  function reduzir(arquivo){
+    return new Promise(function(resolve, reject){
+      if(arquivo.type === "image/gif"){ resolve(arquivo); return; } // gif animado passa direto
+      var img = new Image();
+      img.onload = function(){
+        var escala = Math.min(1, LADO_MAX / Math.max(img.width, img.height));
+        var canvas = document.createElement("canvas");
+        canvas.width  = Math.round(img.width  * escala);
+        canvas.height = Math.round(img.height * escala);
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(img.src);
+        canvas.toBlob(function(blob){
+          blob ? resolve(blob) : reject(new Error("falhou"));
+        }, "image/jpeg", QUALIDADE);
+      };
+      img.onerror = function(){ reject(new Error("nao abriu")); };
+      img.src = URL.createObjectURL(arquivo);
+    });
+  }
+
+  function receberArquivo(arquivo){
+    if(!arquivo) return;
+    if(!/^image\//.test(arquivo.type)){ avisar(recado, "Esse arquivo não é uma imagem.", "erro"); return; }
+
+    avisar(recado, "Preparando a imagem…");
+    reduzir(arquivo).then(function(blob){
+      arquivoPronto = blob;
+      nomePronto = arquivo.type === "image/gif" ? "obra.gif" : "obra.jpg";
+
+      if(urlPreview) URL.revokeObjectURL(urlPreview);
+      urlPreview = URL.createObjectURL(blob);
+
+      dropConteudo.innerHTML = "";
+      var prev = document.createElement("img");
+      prev.src = urlPreview; prev.alt = "";
+      dropConteudo.appendChild(prev);
+
+      if(!titulo.value.trim()){
+        var base = arquivo.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g," ").trim();
+        titulo.value = base.charAt(0).toUpperCase() + base.slice(1);
+      }
+      avisar(recado, "");
+    }).catch(function(){
+      avisar(recado, "Não consegui abrir essa imagem. Tente outro arquivo.", "erro");
+    });
+  }
+
+  drop.addEventListener("click", function(){ inputArquivo.click(); });
+  drop.addEventListener("keydown", function(e){
+    if(e.key === "Enter" || e.key === " "){ e.preventDefault(); inputArquivo.click(); }
+  });
+  inputArquivo.addEventListener("change", function(){ receberArquivo(inputArquivo.files[0]); });
+  ["dragenter","dragover"].forEach(function(evt){
+    drop.addEventListener(evt, function(e){ e.preventDefault(); drop.classList.add("ativo"); });
+  });
+  ["dragleave","drop"].forEach(function(evt){
+    drop.addEventListener(evt, function(e){ e.preventDefault(); drop.classList.remove("ativo"); });
+  });
+  drop.addEventListener("drop", function(e){
+    if(e.dataTransfer && e.dataTransfer.files.length) receberArquivo(e.dataTransfer.files[0]);
+  });
+
+  // ---------- publicar ----------
+  botaoPublicar.addEventListener("click", function(){
+    if(!arquivoPronto){ avisar(recado, "Escolha a imagem primeiro.", "erro"); return; }
+    if(!titulo.value.trim()){ avisar(recado, "Falta o título.", "erro"); titulo.focus(); return; }
+    if(!data.value){ avisar(recado, "Falta a data.", "erro"); data.focus(); return; }
+
+    var dados = new FormData();
+    dados.append("senha", senha);
+    dados.append("imagem", arquivoPronto, nomePronto);
+    dados.append("title", titulo.value.trim());
+    dados.append("category", categoria.value);
+    dados.append("date", data.value);
+
+    botaoPublicar.disabled = true;
+    avisar(recado, "Publicando…");
+
+    fetch("/api/obras", { method:"POST", body: dados })
+      .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, corpo:j }; }); })
+      .then(function(res){
+        botaoPublicar.disabled = false;
+        if(!res.ok){ avisar(recado, res.corpo.erro || "Não deu certo.", "erro"); return; }
+        limparFormulario();
+        avisar(recado, "Publicado.", "ok");
+        carregarLista();
+      })
+      .catch(function(){
+        botaoPublicar.disabled = false;
+        avisar(recado, "Sem conexão com o servidor. Tente de novo.", "erro");
+      });
+  });
+
+  function limparFormulario(){
+    arquivoPronto = null;
+    if(urlPreview){ URL.revokeObjectURL(urlPreview); urlPreview = null; }
+    dropConteudo.textContent = "Clique ou arraste a imagem aqui";
+    inputArquivo.value = "";
+    titulo.value = "";
+    data.value = hoje();
+  }
+
+  // ---------- lista ----------
+  function carregarLista(){
+    fetch("/api/obras", { cache:"no-store" })
+      .then(function(r){ return r.json(); })
+      .then(desenhar)
+      .catch(function(){ avisar(recado, "Não consegui carregar a lista.", "erro"); });
+  }
+
+  function desenhar(obras){
+    lista.innerHTML = "";
+    contador.textContent = obras.length;
+    vazio.style.display = obras.length ? "none" : "block";
+
+    obras.forEach(function(o){
+      var li = document.createElement("li");
+
+      var img = document.createElement("img");
+      img.src = "/img/" + o.id; img.alt = ""; img.loading = "lazy";
+
+      var meio = document.createElement("div");
+      var h = document.createElement("div"); h.className = "titulo"; h.textContent = o.title;
+      var m = document.createElement("div"); m.className = "meta";
+      m.textContent = rotulo(o.category) + " · " + formatarData(o.date);
+      meio.appendChild(h); meio.appendChild(m);
+
+      var remover = document.createElement("button");
+      remover.className = "discreto"; remover.type = "button"; remover.textContent = "Remover";
+      remover.addEventListener("click", function(){
+        if(!confirm("Remover \u201c" + o.title + "\u201d da galeria?")) return;
+        fetch("/api/obras", {
+          method:"DELETE",
+          headers:{ "content-type":"application/json" },
+          body: JSON.stringify({ senha: senha, id: o.id })
+        })
+        .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, corpo:j }; }); })
+        .then(function(res){
+          if(!res.ok){ avisar(recado, res.corpo.erro || "Não deu para remover.", "erro"); return; }
+          avisar(recado, "Removida.", "ok");
+          carregarLista();
+        });
+      });
+
+      li.appendChild(img); li.appendChild(meio); li.appendChild(remover);
+      lista.appendChild(li);
+    });
+  }
+
+  function rotulo(cat){
+    return { character:"Character Design", ilustracao:"Ilustração", fanart:"Fan Art" }[cat] || cat;
+  }
+  function formatarData(iso){
+    var p = iso.split("-");
+    return p[2] + "/" + p[1] + "/" + p[0];
+  }
+
+  // ---------- início ----------
+  var guardada = null;
+  try{ guardada = sessionStorage.getItem("painel:senha"); }catch(e){}
+  if(guardada) entrar(guardada);
+})();
+</script>
+</body>
+</html>

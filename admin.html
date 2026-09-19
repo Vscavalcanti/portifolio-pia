@@ -153,17 +153,28 @@
     carregarLista();
   }
 
-  el("entrar").addEventListener("click", function(){
+  ("click", function(){
     var valor = el("senha").value;
     if(!valor){ avisar(el("recadoEntrada"), "Digite a senha.", "erro"); return; }
     entrar(valor);
   });
-  el("senha").addEventListener("keydown", function(e){
-    if(e.key === "Enter") el("entrar").click();
-  });
-  el("sair").addEventListener("click", function(){
-    try{ sessionStorage.removeItem("painel:senha"); }catch(e){}
-    location.reload();
+    el("entrar").addEventListener("click", function(){
+    var valor = el("senha").value;
+    if(!valor){ avisar(el("recadoEntrada"), "Digite a senha.", "erro"); return; }
+
+    avisar(el("recadoEntrada"), "Conferindo…");
+    fetch("/api/obras", {
+      method:"POST",
+      headers:{ "content-type":"application/json" },
+      body: JSON.stringify({ senha: valor })
+    })
+    .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, corpo:j }; }); })
+    .then(function(res){
+      if(!res.ok){ avisar(el("recadoEntrada"), res.corpo.erro || "Senha incorreta.", "erro"); return; }
+      avisar(el("recadoEntrada"), "");
+      entrar(valor);
+    })
+    .catch(function(){ avisar(el("recadoEntrada"), "Sem conexão com o servidor.", "erro"); });
   });
 
   // ---------- escolher e reduzir a imagem ----------
@@ -327,7 +338,10 @@
   // ---------- início ----------
   var guardada = null;
   try{ guardada = sessionStorage.getItem("painel:senha"); }catch(e){}
-  if(guardada) entrar(guardada);
+    if(guardada){
+    el("senha").value = guardada;
+    el("entrar").click();
+  }
 })();
 </script>
 </body>

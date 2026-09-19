@@ -36,6 +36,19 @@ export default async (req) => {
 
   // ---------- cadastrar ----------
   if (req.method === "POST") {
+        // confere a senha na entrada do painel (corpo em JSON, sem imagem)
+    if ((req.headers.get("content-type") || "").includes("application/json")) {
+      let dados;
+      try {
+        dados = await req.json();
+      } catch {
+        return json({ erro: "Pedido inválido." }, 400);
+      }
+      if (!senhaConfere(dados.senha)) {
+        return json({ erro: "Senha incorreta." }, 401);
+      }
+      return json({ ok: true });
+    }
     let form;
     try {
       form = await req.formData();

@@ -17,9 +17,7 @@ export default async (req) => {
   return new Response(resultado.data, {
     headers: {
       "content-type": resultado.metadata?.type || "image/jpeg",
-      // navegador guarda por 1 ano
       "cache-control": "public, max-age=31536000, immutable",
-      // CDN do Netlify guarda também, pra não chamar a função a cada visita
       "netlify-cdn-cache-control": "public, max-age=31536000, durable, immutable",
     },
   });

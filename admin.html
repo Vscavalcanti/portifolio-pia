@@ -153,12 +153,7 @@
     carregarLista();
   }
 
-  ("click", function(){
-    var valor = el("senha").value;
-    if(!valor){ avisar(el("recadoEntrada"), "Digite a senha.", "erro"); return; }
-    entrar(valor);
-  });
-    el("entrar").addEventListener("click", function(){
+  el("entrar").addEventListener("click", function(){
     var valor = el("senha").value;
     if(!valor){ avisar(el("recadoEntrada"), "Digite a senha.", "erro"); return; }
 
